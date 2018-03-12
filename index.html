@@ -1,0 +1,32 @@
+<script type="text/javascript" src="//cdn.bootcss.com/jquery/1.12.4/jquery.js"></script>
+<script type="text/javascript" src="./animateNumber.js"></script>
+<button onclick="create()">create</button><button onclick="destroy()">destroy</button>
+<div id="demo" style="padding:10px;">
+
+</div>
+
+<script>
+
+var timer
+
+function create(){
+	$('#demo').animateNumber({
+		maxNumber: 99999999,
+		defaultNumber: 54875644,
+		onCreate: function(){
+			timer = setInterval(function(){
+				$('#demo').animateNumber('set', Math.random() * 100000);	
+			}, 2000);		
+		}
+	});
+}
+
+function destroy(){
+	$('#demo').animateNumber('destroy');
+	if( timer ) clearInterval(timer);
+}
+
+$(function(){
+	create();
+});
+</script>
