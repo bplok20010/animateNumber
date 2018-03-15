@@ -171,6 +171,8 @@
 			if( value === '' ) return 0;
 			value = parseInt(value);
 			
+			value = isNaN(value) ? -1 : value;
+			
 			return (value + 1) * opt.itemHeight * -1;
 		},
 		
@@ -226,7 +228,8 @@
 	$.fn.animateNumber = function(opts, num){
 		return this.each(function(){
 			
-			if( opts === 'destroy' && this.$$a_m ) {
+			if( opts === 'destroy' ) {
+				if( !this.$$a_m ) return;
 				this.$$a_m.$container.remove();
 				if( this.$$a_m.options.onDestroy ) {
 					this.$$a_m.options.onDestroy.call(this.$$a_m);	
@@ -235,16 +238,15 @@
 				return;
 			}
 			
-			if( opts === 'set' && this.$$a_m && num !== undefined ) {
-				this.$$a_m.setNumber( parseInt( num ) || 0 );	
+			if( opts === 'set' ) {
+				if( !this.$$a_m || num === undefined) return;
+				this.$$a_m.setNumber( num );	
 				return;	
 			}
 			
 			if( this.$$a_m ) return;
 			
-			if( !$.isPlainObject( opts ) ) return;
-			
-			this.$$a_m = new AnimateNumber($.extend(opts, {
+			this.$$a_m = new AnimateNumber($.extend({}, opts, {
 				container: this	
 			}));
 		})	
